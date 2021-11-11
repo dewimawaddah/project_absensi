@@ -75,7 +75,8 @@ class PegawaiController extends Controller
      */
     public function show($id)
     {
-        //
+        $pegawai = Pegawai::find($id);
+        return view('pegawai.detail',compact('pegawai'));
     }
 
     /**
@@ -135,6 +136,7 @@ class PegawaiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Pegawai::destroy($id);
+        return redirect()->route('pegawai.index');
     }
 }
