@@ -35,6 +35,6 @@ Detail Data Pegawai
     </thead>
 </table>
 
-<a href="{{ route('pegawai.index') }}" class="btn btn-primary btn-sm">Kembali</a>
+<a href="{{ route('pegawai.index') }}" class="btn btn-primary">Kembali</a>
 
 @endsection

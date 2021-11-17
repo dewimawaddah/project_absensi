@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('konten');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () {
+        return view('konten');
+    });
+
+    Route::resource('pegawai', 'PegawaiController');
+    Route::resource('absensi', 'AbsensiController');
+    Route::get('/exportPegawai', 'PegawaiController@pegawaiExport')->name('exportpegawai');
 });
 
-Route::resource('pegawai', 'PegawaiController');
-Route::resource('absensi', 'AbsensiController');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

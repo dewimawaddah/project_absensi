@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Pegawai;
+use App\Exports\PegawaiExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +19,11 @@ class PegawaiController extends Controller
     {
         $pegawai = Pegawai::all();
         return view('pegawai.index', compact('pegawai'));
+    }
+
+    public function pegawaiExport()
+    {
+        return Excel::download(new PegawaiExport, 'pegawai.xlsx');
     }
 
     /**
@@ -76,7 +83,7 @@ class PegawaiController extends Controller
     public function show($id)
     {
         $pegawai = Pegawai::find($id);
-        return view('pegawai.detail',compact('pegawai'));
+        return view('pegawai.detail', compact('pegawai'));
     }
 
     /**

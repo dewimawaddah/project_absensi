@@ -58,7 +58,8 @@ Halaman Pegawai
         </div>
         @enderror
     </div>
-
+    <a href="{{ route('pegawai.index') }}" class="btn btn-primary">Kembali</a>
     <button type="submit" class="btn btn-primary">Submit</button>
+
 </form>
 @endsection
