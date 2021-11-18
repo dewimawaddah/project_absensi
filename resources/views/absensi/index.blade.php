@@ -60,7 +60,10 @@ Halaman Absensi
     <div class="col">
         <div class="card shadow mb-4 mt-3">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Absensi Hari ini ({{ date('d/m/Y') }})</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Absensi Hari ini ({{ date('d/m/Y') }})
+                    <a href="{{ route('exportabsensi') }}" class="btn btn-success btn-sm float-right"><i
+                            class="fas fa-download fa-sm text-white-50 mr-1"></i>CSV</a>
+                </h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

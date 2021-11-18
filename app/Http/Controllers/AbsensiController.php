@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Absensi;
+use App\Exports\AbsensiExport;
 use App\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class AbsensiController extends Controller
 {
@@ -21,6 +22,11 @@ class AbsensiController extends Controller
         $absensi = Absensi::where('tanggal', date('d/m/Y'))->get();
         $pegawai = Pegawai::all();
         return view('absensi.index', compact('pegawai', 'absensi'));
+    }
+
+    public function absensiExport()
+    {
+        return Excel::download(new AbsensiExport, 'absensi.xlsx');
     }
 
     /**
@@ -60,13 +66,15 @@ class AbsensiController extends Controller
             $data_absensi = Absensi::where('tanggal', date('d/m/Y'))->where('nik_pegawai', $request->nik)->first();
             // TODO Dewi: jika data absensinya ada, cek apakah jam keluarnya sudah diisi, jika sudah buat dia error / kembali ke halaman sebelumnya
 
-            if ($data_absensi && $data_absensi->jam_keluar) {
-                return redirect()->back();
-            }
-
-            // TODO Dewi: jika belum, create data baru, jam masuk diisi jam saat ini, tanggal hari ini, jika sudah, update datanya, isi jam keluarnya.
-
-            if (!$data_absensi) {
+            if ($data_absensi) {
+                $data_absensi = false;
+                $absensi2 = Absensi::where('tanggal', date('d/m/Y'))->where('nik_pegawai', $request->nik)->whereNotNull('jam_masuk')->first();
+                if ($absensi2) {
+                    $absensi2->update([
+                        'jam_keluar' => date("H:i:s")
+                    ]);
+                }
+            } else {
                 $pegawai = Pegawai::where('nik', $request->nik)->first();
                 // TODO Dewi: Setelah membuat field di migration baru, tambahkan disini. cari tahu bagaimana caranya di php mengetahui tanggal hari ini, lalu bagaimana cara mengetahui jam:menit:detik hari ini.
                 $tanggal = date("d/m/Y");
@@ -76,18 +84,15 @@ class AbsensiController extends Controller
                     'full_name_pegawai' => $pegawai->full_name,
                     'tanggal' => $tanggal,
                     'jam_masuk' => $jam_masuk,
+                ]);
+
+                $absensi->update([
                     'jam_keluar' => null
                 ]);
-                return redirect()->route('absensi.index');
-            } else {
-                // jika datanya ada
-                $data_absensi->update([
-                    'jam_keluar' => date("H:i:s")
-                ]);
             }
-        }
 
-        return redirect()->route('absensi.index');
+            return redirect()->back();
+        }
     }
 
     /**

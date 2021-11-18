@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('pegawai', 'PegawaiController');
     Route::resource('absensi', 'AbsensiController');
     Route::get('/exportPegawai', 'PegawaiController@pegawaiExport')->name('exportpegawai');
+    Route::get('/exportAbsensi', 'AbsensiController@absensiExport')->name('exportabsensi');
 });
 
 Auth::routes();

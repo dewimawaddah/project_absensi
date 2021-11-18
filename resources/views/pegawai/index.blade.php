@@ -9,7 +9,8 @@ Halaman Pegawai
 <div class="card shadow mb-4 mt-3">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Data Pegawai
-            <a href="{{ route('exportpegawai') }}" class="btn btn-success btn-sm float-right">Export</a>
+            <a href="{{ route('exportpegawai') }}" class="btn btn-success btn-sm float-right"><i
+                    class="fas fa-download fa-sm text-white-50 mr-1"></i>CSV</a>
             <a href="{{ route('pegawai.create') }}" class="btn btn-primary btn-sm float-right mr-2">Tambah Data</a>
     </div>
     <div class="card-body">
